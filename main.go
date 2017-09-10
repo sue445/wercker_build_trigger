@@ -31,6 +31,23 @@ func main() {
 		return
 	}
 
+	config, err := LoadConfigFromFile(configFile)
+
+	if err != nil {
+		panic(err)
+	}
+
+	wercker := NewWercker(token)
+
+	for _, run := range config.Pipelines {
+		ret, err := wercker.TriggerNewRun(run.Id, run.Branch)
+
+		if err == nil {
+			fmt.Printf("[%s:%s] Triggered run: %s\n", run.Id, run.Branch, ret.Url)
+		} else {
+			fmt.Printf("[%s:%s] Error: %v", run.Id, run.Branch, err)
+		}
+	}
 }
 
 func printVersion() {
