@@ -5,6 +5,10 @@ import (
 	"fmt"
 )
 
+const (
+	DEFAULT_BRANCH = "master"
+)
+
 var (
 	Version  string
 	Revision string
@@ -40,12 +44,16 @@ func main() {
 	wercker := NewWercker(token)
 
 	for _, run := range config.Pipelines {
+		if len(run.Branch) == 0 {
+			run.Branch = DEFAULT_BRANCH
+		}
+
 		ret, err := wercker.TriggerNewRun(run.Id, run.Branch)
 
 		if err == nil {
 			fmt.Printf("[%s:%s] Triggered run: %s\n", run.Id, run.Branch, ret.Url)
 		} else {
-			fmt.Printf("[%s:%s] Error: %v", run.Id, run.Branch, err)
+			fmt.Printf("[%s:%s] Error: %v\n", run.Id, run.Branch, err)
 		}
 	}
 }
