@@ -14,6 +14,12 @@
   version = "v1.1.0"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/jarcoal/httpmock"
+  packages = ["."]
+  revision = "4442edb3db31196622da56482fd8d0fa375fba4d"
+
+[[projects]]
   name = "github.com/pmezard/go-difflib"
   packages = ["difflib"]
   revision = "792786c7400a136282c1664665ae0a8db921c6c2"
@@ -34,6 +40,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b42770717013f8a84e492445642a8c476df1880e5f510d4b9df69507c93321cc"
+  inputs-digest = "81b940342574f89dee77978d1dde2e70f98a9cb565e1b776c2fa25d6d8e258bc"
   solver-name = "gps-cdcl"
   solver-version = 1
