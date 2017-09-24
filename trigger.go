@@ -60,17 +60,17 @@ func (t *Trigger) Run(args []string) int {
 
 	wercker := NewWercker(t.token)
 
-	for _, run := range config.Pipelines {
-		if len(run.Branch) == 0 {
-			run.Branch = DEFAULT_BRANCH
+	for _, pipeline := range config.Pipelines {
+		if len(pipeline.Branch) == 0 {
+			pipeline.Branch = DEFAULT_BRANCH
 		}
 
-		ret, err := wercker.TriggerNewRun(run.Id, run.Branch)
+		ret, err := wercker.TriggerNewRun(pipeline.Id, pipeline.Branch)
 
 		if err == nil {
-			fmt.Printf("[%s:%s] Triggered run: %s\n", run.Id, run.Branch, ret.Url)
+			fmt.Printf("[%s:%s] Triggered pipeline: %s\n", pipeline.Id, pipeline.Branch, ret.Url)
 		} else {
-			fmt.Printf("[%s:%s] Error: %v\n", run.Id, run.Branch, err)
+			fmt.Printf("[%s:%s] Error: %v\n", pipeline.Id, pipeline.Branch, err)
 		}
 	}
 
