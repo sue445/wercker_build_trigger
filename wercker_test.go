@@ -11,7 +11,7 @@ import (
 )
 
 func TestTriggerNewRun(t *testing.T) {
-	token = "api_token"
+	token := "api_token"
 	pipelineId := "123456789012345678901234"
 	branch := "develop"
 
