@@ -16,6 +16,9 @@ func main() {
 	c.Args = os.Args[1:]
 
 	c.Commands = map[string]cli.CommandFactory{
+		"search": func() (cli.Command, error) {
+			return NewSearch(), nil
+		},
 		"trigger": func() (cli.Command, error) {
 			return NewTrigger(), nil
 		},
