@@ -6,12 +6,10 @@ import (
 )
 
 type Config struct {
-	Pipelines []ConfigPipeline `yaml:"pipelines"`
-}
-
-type ConfigPipeline struct {
-	Id     string
-	Branch string
+	Pipelines []struct {
+		Id     string
+		Branch string
+	} `yaml:"pipelines"`
 }
 
 func LoadConfigFromData(yamlData string) (Config, error) {
