@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func TestTriggerNewRun(t *testing.T) {
+func TestWercker_TriggerNewRun(t *testing.T) {
 	token := "api_token"
 	pipelineId := "123456789012345678901234"
 	branch := "develop"
