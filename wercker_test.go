@@ -5,6 +5,7 @@ import (
 	"github.com/bouk/monkey"
 	"github.com/jarcoal/httpmock"
 	"github.com/stretchr/testify/assert"
+	"io/ioutil"
 	"net/http"
 	"testing"
 	"time"
@@ -56,4 +57,38 @@ func TestWercker_TriggerNewRun(t *testing.T) {
 
 	assert.Equal(t, runUrl, ret.Url)
 	assert.Equal(t, message, ret.Message)
+}
+
+func TestWercker_GetApplication(t *testing.T) {
+	token := "api_token"
+	appPath := "wercker/docs"
+	appId := "54c9168980c7075225004157"
+
+	// mock http GET
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
+
+	url := fmt.Sprintf("https://app.wercker.com/api/v3/applications/%s", appPath)
+
+	httpmock.RegisterResponder(
+		"GET", url,
+		httpmock.NewStringResponder(200, readFile("test/GetApplication.json")),
+	)
+
+	wercker := NewWercker(token)
+
+	ret, err := wercker.GetApplication(appPath)
+
+	assert.NoError(t, err)
+	assert.Equal(t, appId, ret.Id)
+}
+
+func readFile(fileName string) string {
+	buf, err := ioutil.ReadFile(fileName)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return string(buf)
 }

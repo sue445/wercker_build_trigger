@@ -44,6 +44,26 @@ func NewWercker(token string) *Wercker {
 	return w
 }
 
+func (w *Wercker) GetApplication(appPath string) (app *WerckerApplication, err error) {
+	req, err := http.NewRequest(
+		"GET",
+		"https://app.wercker.com/api/v3/applications/"+appPath,
+		nil,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := w.execute(req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(body, &app)
+	return app, err
+}
+
 func (w *Wercker) TriggerNewRun(pipelineId string, branch string) (run *WerckerRun, err error) {
 	currentTime := time.Now().Format("2006-01-02 15:04:05")
 	params := WerckerTriggerNewRunParam{
