@@ -110,6 +110,36 @@ func TestWercker_GetRuns(t *testing.T) {
 	assert.Equal(t, "build", ret[0].Pipeline.Name)
 }
 
+func TestWercker_FindPipeline(t *testing.T) {
+	token := "api_token"
+	appPath := "wercker/docs"
+	pipelineName := "build"
+	appId := "54c9168980c7075225004157"
+	skip := 0
+
+	// mock http GET
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
+
+	httpmock.RegisterResponder(
+		"GET", fmt.Sprintf("https://app.wercker.com/api/v3/applications/%s", appPath),
+		httpmock.NewStringResponder(200, readFile("test/GetApplication.json")),
+	)
+
+	httpmock.RegisterResponder(
+		"GET", fmt.Sprintf("https://app.wercker.com/api/v3/runs?applicationId=%s&skip=%d", appId, skip),
+		httpmock.NewStringResponder(200, readFile("test/GetRuns.json")),
+	)
+
+	wercker := NewWercker(token)
+
+	pipeline, err := wercker.FindPipeline(appPath, pipelineName)
+
+	assert.NoError(t, err)
+	assert.Equal(t, "54c9168980c7075225004157", pipeline.Id)
+	assert.Equal(t, "build", pipeline.Name)
+}
+
 func readFile(fileName string) string {
 	buf, err := ioutil.ReadFile(fileName)
 

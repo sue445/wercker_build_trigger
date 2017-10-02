@@ -11,6 +11,10 @@ import (
 	"time"
 )
 
+const (
+	MAX_LIMIT = 20
+)
+
 type Wercker struct {
 	token string
 }
@@ -96,6 +100,34 @@ func (w *Wercker) GetRuns(applicationId string, skip int) (runs []WerckerRun, er
 
 	err = json.Unmarshal(body, &runs)
 	return runs, err
+}
+
+func (w *Wercker) FindPipeline(appPath string, pipelineName string) (pipeline *WerckerPipeline, err error) {
+	application, err := w.GetApplication(appPath)
+	if err != nil {
+		return nil, err
+	}
+
+	skip := 0
+
+	for {
+		runs, err := w.GetRuns(application.Id, skip)
+		if err != nil {
+			return nil, err
+		}
+
+		for _, run := range runs {
+			if run.Pipeline.Name == pipelineName {
+				return &run.Pipeline, nil
+			}
+		}
+
+		if len(runs) < MAX_LIMIT {
+			return nil, fmt.Errorf("Not Found pipeline: %s", pipelineName)
+		}
+
+		skip += MAX_LIMIT
+	}
 }
 
 func (w *Wercker) TriggerNewRun(pipelineId string, branch string) (run *WerckerRun, err error) {
