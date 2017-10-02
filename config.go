@@ -8,6 +8,8 @@ import (
 type Config struct {
 	Pipelines []struct {
 		Id     string
+		Name   string
+		Path   string
 		Branch string
 	} `yaml:"pipelines"`
 }

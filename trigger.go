@@ -60,17 +60,33 @@ func (t *Trigger) Run(args []string) int {
 
 	wercker := NewWercker(t.token)
 
-	for _, pipeline := range config.Pipelines {
-		if len(pipeline.Branch) == 0 {
-			pipeline.Branch = DEFAULT_BRANCH
+	for _, configPipeline := range config.Pipelines {
+		if len(configPipeline.Branch) == 0 {
+			configPipeline.Branch = DEFAULT_BRANCH
 		}
 
-		ret, err := wercker.TriggerNewRun(pipeline.Id, pipeline.Branch)
+		if len(configPipeline.Id) > 0 {
+			ret, err := wercker.TriggerNewRun(configPipeline.Id, configPipeline.Branch)
 
-		if err == nil {
-			fmt.Printf("[%s:%s] Triggered pipeline: %s\n", pipeline.Id, pipeline.Branch, ret.Url)
-		} else {
-			fmt.Printf("[%s:%s] Error: %v\n", pipeline.Id, pipeline.Branch, err)
+			if err == nil {
+				fmt.Printf("[pipelineId:%s][branch:%s] Triggered pipeline: %s\n", configPipeline.Id, configPipeline.Branch, ret.Url)
+			} else {
+				fmt.Printf("[pipelineId:%s][branch:%s] Error: %v\n", configPipeline.Id, configPipeline.Branch, err)
+			}
+
+		} else if len(configPipeline.Path) > 0 && len(configPipeline.Name) > 0 {
+			pipeline, err := wercker.FindPipeline(configPipeline.Path, configPipeline.Name)
+
+			if err != nil {
+				fmt.Printf("[path:%s][pipelineName:%s] Error: %v\n", configPipeline.Path, configPipeline.Name, err)
+			}
+
+			ret, err := wercker.TriggerNewRun(pipeline.Id, configPipeline.Branch)
+			if err == nil {
+				fmt.Printf("[path:%s][pipelineName:%s][pipelineId:%s][branch:%s] Triggered pipeline: %s\n", configPipeline.Path, configPipeline.Name, pipeline.Id, configPipeline.Branch, ret.Url)
+			} else {
+				fmt.Printf("[path:%s][pipelineName:%s][pipelineId:%s][branch:%s] Error: %v\n", configPipeline.Path, configPipeline.Name, pipeline.Id, configPipeline.Branch, err)
+			}
 		}
 	}
 
