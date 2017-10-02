@@ -6,7 +6,13 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
+	"strconv"
 	"time"
+)
+
+const (
+	MAX_LIMIT = 20
 )
 
 type Wercker struct {
@@ -18,12 +24,19 @@ type WerckerApplication struct {
 }
 
 type WerckerRun struct {
-	Url        string `json:"url"`
-	CreatedAt  string `json:"createdAt"`
-	CommitHash string `json:"commitHash"`
-	Message    string `json:"message"`
-	Result     string `json:"result"`
-	Status     string `json:"status"`
+	Id         string          `json:"id"`
+	Url        string          `json:"url"`
+	CreatedAt  string          `json:"createdAt"`
+	CommitHash string          `json:"commitHash"`
+	Message    string          `json:"message"`
+	Result     string          `json:"result"`
+	Status     string          `json:"status"`
+	Pipeline   WerckerPipeline `json:"pipeline"`
+}
+
+type WerckerPipeline struct {
+	Id   string `json:"id"`
+	Name string `json:"name"`
 }
 
 type WerckerTriggerNewRunParam struct {
@@ -42,6 +55,79 @@ func NewWercker(token string) *Wercker {
 	w := new(Wercker)
 	w.token = token
 	return w
+}
+
+func (w *Wercker) GetApplication(appPath string) (app *WerckerApplication, err error) {
+	req, err := http.NewRequest(
+		"GET",
+		"https://app.wercker.com/api/v3/applications/"+appPath,
+		nil,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := w.execute(req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(body, &app)
+	return app, err
+}
+
+func (w *Wercker) GetRuns(applicationId string, skip int) (runs []WerckerRun, err error) {
+	req, err := http.NewRequest(
+		"GET",
+		"https://app.wercker.com/api/v3/runs",
+		nil,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	values := url.Values{}
+	values.Add("applicationId", applicationId)
+	values.Add("skip", strconv.Itoa(skip))
+	req.URL.RawQuery = values.Encode()
+
+	body, err := w.execute(req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(body, &runs)
+	return runs, err
+}
+
+func (w *Wercker) FindPipeline(appPath string, pipelineName string) (pipeline *WerckerPipeline, err error) {
+	application, err := w.GetApplication(appPath)
+	if err != nil {
+		return nil, err
+	}
+
+	skip := 0
+
+	for {
+		runs, err := w.GetRuns(application.Id, skip)
+		if err != nil {
+			return nil, err
+		}
+
+		for _, run := range runs {
+			if run.Pipeline.Name == pipelineName {
+				return &run.Pipeline, nil
+			}
+		}
+
+		if len(runs) < MAX_LIMIT {
+			return nil, fmt.Errorf("Not Found pipeline: %s", pipelineName)
+		}
+
+		skip += MAX_LIMIT
+	}
 }
 
 func (w *Wercker) TriggerNewRun(pipelineId string, branch string) (run *WerckerRun, err error) {

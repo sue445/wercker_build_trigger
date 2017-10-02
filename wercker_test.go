@@ -2,15 +2,17 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/bouk/monkey"
 	"github.com/jarcoal/httpmock"
 	"github.com/stretchr/testify/assert"
+	"io/ioutil"
 	"net/http"
 	"testing"
 	"time"
 )
 
-func TestTriggerNewRun(t *testing.T) {
+func TestWercker_TriggerNewRun(t *testing.T) {
 	token := "api_token"
 	pipelineId := "123456789012345678901234"
 	branch := "develop"
@@ -56,4 +58,94 @@ func TestTriggerNewRun(t *testing.T) {
 
 	assert.Equal(t, runUrl, ret.Url)
 	assert.Equal(t, message, ret.Message)
+}
+
+func TestWercker_GetApplication(t *testing.T) {
+	token := "api_token"
+	appPath := "wercker/docs"
+	appId := "54c9168980c7075225004157"
+
+	// mock http GET
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
+
+	url := fmt.Sprintf("https://app.wercker.com/api/v3/applications/%s", appPath)
+
+	httpmock.RegisterResponder(
+		"GET", url,
+		httpmock.NewStringResponder(200, readFile("test/GetApplication.json")),
+	)
+
+	wercker := NewWercker(token)
+
+	ret, err := wercker.GetApplication(appPath)
+
+	assert.NoError(t, err)
+	assert.Equal(t, appId, ret.Id)
+}
+
+func TestWercker_GetRuns(t *testing.T) {
+	token := "api_token"
+	appId := "54c9168980c7075225004157"
+	skip := 0
+
+	// mock http GET
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
+
+	url := fmt.Sprintf("https://app.wercker.com/api/v3/runs?applicationId=%s&skip=%d", appId, skip)
+
+	httpmock.RegisterResponder(
+		"GET", url,
+		httpmock.NewStringResponder(200, readFile("test/GetRuns.json")),
+	)
+
+	wercker := NewWercker(token)
+
+	ret, err := wercker.GetRuns(appId, skip)
+
+	assert.NoError(t, err)
+	assert.Equal(t, "588a61d30a002301003b44d5", ret[0].Id)
+	assert.Equal(t, "54c9168980c7075225004157", ret[0].Pipeline.Id)
+	assert.Equal(t, "build", ret[0].Pipeline.Name)
+}
+
+func TestWercker_FindPipeline(t *testing.T) {
+	token := "api_token"
+	appPath := "wercker/docs"
+	pipelineName := "build"
+	appId := "54c9168980c7075225004157"
+	skip := 0
+
+	// mock http GET
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
+
+	httpmock.RegisterResponder(
+		"GET", fmt.Sprintf("https://app.wercker.com/api/v3/applications/%s", appPath),
+		httpmock.NewStringResponder(200, readFile("test/GetApplication.json")),
+	)
+
+	httpmock.RegisterResponder(
+		"GET", fmt.Sprintf("https://app.wercker.com/api/v3/runs?applicationId=%s&skip=%d", appId, skip),
+		httpmock.NewStringResponder(200, readFile("test/GetRuns.json")),
+	)
+
+	wercker := NewWercker(token)
+
+	pipeline, err := wercker.FindPipeline(appPath, pipelineName)
+
+	assert.NoError(t, err)
+	assert.Equal(t, "54c9168980c7075225004157", pipeline.Id)
+	assert.Equal(t, "build", pipeline.Name)
+}
+
+func readFile(fileName string) string {
+	buf, err := ioutil.ReadFile(fileName)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return string(buf)
 }

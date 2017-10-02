@@ -1,0 +1,57 @@
+{
+  "id": "54c9168980c7075225004157",
+  "url": "https://app.wercker.com/api/v3/applications/wercker/docs",
+  "name": "docs",
+  "owner": {
+    "type": "wercker",
+    "name": "wercker",
+    "avatar": {
+      "gravatar": "33a5bfbcf8a2b90f40e849b6f1fa5eeb"
+    },
+    "userId": "55310d295732ce8a41000054",
+    "meta": {
+      "username": "wercker",
+      "type": "organization",
+      "werckerEmployee": false
+    }
+  },
+  "builds": "https://app.wercker.com/api/v3/applications/wercker/docs/builds",
+  "deploys": "https://app.wercker.com/api/v3/applications/wercker/docs/deploys",
+  "scm": {
+    "type": "git",
+    "owner": "wercker",
+    "domain": "github.com",
+    "repository": "docs"
+  },
+  "badgeKey": "05eb642a41844e42b392d2db39bb7552",
+  "createdAt": "2015-01-28T17:04:09.851Z",
+  "updatedAt": "2016-04-11T18:21:52.826Z",
+  "allowedActions": [
+    "read_project",
+    "list_builds",
+    "read_build",
+    "list_runs",
+    "read_run",
+    "list_runsteps",
+    "read_runstep",
+    "list_buildsteps",
+    "read_buildstep",
+    "follow_project",
+    "unfollow_project",
+    "list_targets",
+    "read_target",
+    "list_workflows",
+    "list_collaborators",
+    "list_comment",
+    "create_comment"
+  ],
+  "theme": "Wave",
+  "settings": {
+    "privacy": "public",
+    "stack": 6,
+    "ignoredBranches": [
+      "gh-pages"
+    ],
+    "apiUserId": "4fa12f24e98cb92630000060"
+  }
+}
