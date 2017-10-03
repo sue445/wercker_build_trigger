@@ -95,6 +95,7 @@ func (w *Wercker) GetRuns(applicationId string, skip int) (runs []WerckerRun, er
 	values := url.Values{}
 	values.Add("applicationId", applicationId)
 	values.Add("skip", strconv.Itoa(skip))
+	values.Add("limit", strconv.Itoa(MAX_LIMIT))
 	req.URL.RawQuery = values.Encode()
 
 	body, err := w.execute(req)
