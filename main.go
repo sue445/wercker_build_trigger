@@ -44,6 +44,14 @@ func main() {
 
 	wercker := NewWercker(token)
 
+	perform(wercker, config)
+}
+
+func printVersion() {
+	fmt.Printf("wercker_build_trigger v%s, build %s\n", Version, Revision)
+}
+
+func perform(wercker WerckerTrigger, config Config) {
 	for _, configPipeline := range config.Pipelines {
 		if len(configPipeline.Branch) == 0 {
 			configPipeline.Branch = DEFAULT_BRANCH
@@ -53,17 +61,16 @@ func main() {
 
 		if err != nil {
 			fmt.Printf("[application_path:%s][pipeline_name:%s] Error: %v\n", configPipeline.ApplicationPath, configPipeline.PipelineName, err)
+			continue
 		}
 
 		ret, err := wercker.TriggerNewRun(pipeline.Id, configPipeline.Branch)
-		if err == nil {
-			fmt.Printf("[application_path:%s][pipeline_name:%s][branch:%s] Triggered pipeline: %s\n", configPipeline.ApplicationPath, configPipeline.PipelineName, configPipeline.Branch, ret.Url)
-		} else {
-			fmt.Printf("[application_path:%s][pipeline_name:%s][branch:%s] Error: %v\n", configPipeline.ApplicationPath, configPipeline.PipelineName, configPipeline.Branch, err)
-		}
-	}
-}
 
-func printVersion() {
-	fmt.Printf("wercker_build_trigger v%s, build %s\n", Version, Revision)
+		if err != nil {
+			fmt.Printf("[application_path:%s][pipeline_name:%s][branch:%s] Error: %v\n", configPipeline.ApplicationPath, configPipeline.PipelineName, configPipeline.Branch, err)
+			continue
+		}
+
+		fmt.Printf("[application_path:%s][pipeline_name:%s][branch:%s] Triggered pipeline: %s\n", configPipeline.ApplicationPath, configPipeline.PipelineName, configPipeline.Branch, ret.Url)
+	}
 }

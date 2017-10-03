@@ -51,6 +51,11 @@ type WerckerError struct {
 	Message    string `json:"message"`
 }
 
+type WerckerTrigger interface {
+	FindPipeline(appPath string, pipelineName string) (pipeline *WerckerPipeline, err error)
+	TriggerNewRun(pipelineId string, branch string) (run *WerckerRun, err error)
+}
+
 func NewWercker(token string) *Wercker {
 	w := new(Wercker)
 	w.token = token
