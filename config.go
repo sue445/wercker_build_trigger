@@ -7,9 +7,9 @@ import (
 
 type Config struct {
 	Pipelines []struct {
-		Name   string
-		Path   string
-		Branch string
+		ApplicationPath string `yaml:"application_path"`
+		PipelineName    string `yaml:"pipeline_name"`
+		Branch          string `yaml:"branch"`
 	} `yaml:"pipelines"`
 }
 

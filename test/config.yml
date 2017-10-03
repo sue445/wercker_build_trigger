@@ -1,7 +1,7 @@
 # test yaml
 pipelines:
-  - path: "wercker/docs"
-    name: "build"
+  - application_path: "wercker/docs"
+    pipeline_name: "build"
     branch: "master"
-  - path: "sue445/itamae-plugin-recipe-consul"
-    name: "build-centos70"
+  - application_path: "sue445/itamae-plugin-recipe-consul"
+    pipeline_name: "build-centos70"
