@@ -62,14 +62,14 @@ func TestWercker_TriggerNewRun(t *testing.T) {
 
 func TestWercker_GetApplication(t *testing.T) {
 	token := "api_token"
-	appPath := "wercker/docs"
-	appId := "54c9168980c7075225004157"
+	applicationPath := "wercker/docs"
+	applicationId := "54c9168980c7075225004157"
 
 	// mock http GET
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
-	url := fmt.Sprintf("https://app.wercker.com/api/v3/applications/%s", appPath)
+	url := fmt.Sprintf("https://app.wercker.com/api/v3/applications/%s", applicationPath)
 
 	httpmock.RegisterResponder(
 		"GET", url,
@@ -78,22 +78,22 @@ func TestWercker_GetApplication(t *testing.T) {
 
 	wercker := NewWercker(token)
 
-	ret, err := wercker.GetApplication(appPath)
+	ret, err := wercker.GetApplication(applicationPath)
 
 	assert.NoError(t, err)
-	assert.Equal(t, appId, ret.Id)
+	assert.Equal(t, applicationId, ret.Id)
 }
 
 func TestWercker_GetRuns(t *testing.T) {
 	token := "api_token"
-	appId := "54c9168980c7075225004157"
+	applicationId := "54c9168980c7075225004157"
 	skip := 0
 
 	// mock http GET
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
-	url := fmt.Sprintf("https://app.wercker.com/api/v3/runs?applicationId=%s&skip=%d", appId, skip)
+	url := fmt.Sprintf("https://app.wercker.com/api/v3/runs?applicationId=%s&skip=%d", applicationId, skip)
 
 	httpmock.RegisterResponder(
 		"GET", url,
@@ -102,7 +102,7 @@ func TestWercker_GetRuns(t *testing.T) {
 
 	wercker := NewWercker(token)
 
-	ret, err := wercker.GetRuns(appId, skip)
+	ret, err := wercker.GetRuns(applicationId, skip)
 
 	assert.NoError(t, err)
 	assert.Equal(t, "588a61d30a002301003b44d5", ret[0].Id)
@@ -112,9 +112,9 @@ func TestWercker_GetRuns(t *testing.T) {
 
 func TestWercker_FindPipeline(t *testing.T) {
 	token := "api_token"
-	appPath := "wercker/docs"
+	applicationPath := "wercker/docs"
 	pipelineName := "build"
-	appId := "54c9168980c7075225004157"
+	applicationId := "54c9168980c7075225004157"
 	skip := 0
 
 	// mock http GET
@@ -122,18 +122,18 @@ func TestWercker_FindPipeline(t *testing.T) {
 	defer httpmock.DeactivateAndReset()
 
 	httpmock.RegisterResponder(
-		"GET", fmt.Sprintf("https://app.wercker.com/api/v3/applications/%s", appPath),
+		"GET", fmt.Sprintf("https://app.wercker.com/api/v3/applications/%s", applicationPath),
 		httpmock.NewStringResponder(200, readFile("test/GetApplication.json")),
 	)
 
 	httpmock.RegisterResponder(
-		"GET", fmt.Sprintf("https://app.wercker.com/api/v3/runs?applicationId=%s&skip=%d", appId, skip),
+		"GET", fmt.Sprintf("https://app.wercker.com/api/v3/runs?applicationId=%s&skip=%d", applicationId, skip),
 		httpmock.NewStringResponder(200, readFile("test/GetRuns.json")),
 	)
 
 	wercker := NewWercker(token)
 
-	pipeline, err := wercker.FindPipeline(appPath, pipelineName)
+	pipeline, err := wercker.FindPipeline(applicationPath, pipelineName)
 
 	assert.NoError(t, err)
 	assert.Equal(t, "54c9168980c7075225004157", pipeline.Id)

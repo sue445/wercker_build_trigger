@@ -62,10 +62,10 @@ func NewWercker(token string) *Wercker {
 	return w
 }
 
-func (w *Wercker) GetApplication(appPath string) (app *WerckerApplication, err error) {
+func (w *Wercker) GetApplication(applicationPath string) (app *WerckerApplication, err error) {
 	req, err := http.NewRequest(
 		"GET",
-		"https://app.wercker.com/api/v3/applications/"+appPath,
+		"https://app.wercker.com/api/v3/applications/"+applicationPath,
 		nil,
 	)
 	if err != nil {
@@ -107,8 +107,8 @@ func (w *Wercker) GetRuns(applicationId string, skip int) (runs []WerckerRun, er
 	return runs, err
 }
 
-func (w *Wercker) FindPipeline(appPath string, pipelineName string) (pipeline *WerckerPipeline, err error) {
-	application, err := w.GetApplication(appPath)
+func (w *Wercker) FindPipeline(applicationPath string, pipelineName string) (pipeline *WerckerPipeline, err error) {
+	application, err := w.GetApplication(applicationPath)
 	if err != nil {
 		return nil, err
 	}
