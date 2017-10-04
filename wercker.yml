@@ -43,3 +43,10 @@ build:
         name: go vet
         code: |
           go vet
+
+  after-steps:
+    # https://github.com/wercker/step-slack
+    - slack-notifier:
+        url: $SLACK_WEBHOOK_URL
+        channel: $SLACK_CHANNEL
+        username: wercker_build
