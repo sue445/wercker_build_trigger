@@ -38,3 +38,8 @@ build:
         name: go test
         code: |
           go test
+
+    - script:
+        name: go vet
+        code: |
+          go vet
