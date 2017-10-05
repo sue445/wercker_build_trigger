@@ -44,33 +44,37 @@ func main() {
 
 	wercker := NewWercker(token)
 
-	perform(wercker, config)
+	for _, configPipeline := range config.Pipelines {
+		run, err := perform(wercker, configPipeline)
+
+		if err == nil {
+			fmt.Printf("[application_path:%s][pipeline_name:%s][branch:%s] Triggered pipeline: %s\n", configPipeline.ApplicationPath, configPipeline.PipelineName, configPipeline.Branch, run.Url)
+		} else {
+			fmt.Printf("[application_path:%s][pipeline_name:%s] Error: %v\n", configPipeline.ApplicationPath, configPipeline.PipelineName, err)
+		}
+	}
 }
 
 func printVersion() {
 	fmt.Printf("wercker_build_trigger v%s, build %s\n", Version, Revision)
 }
 
-func perform(wercker WerckerTrigger, config Config) {
-	for _, configPipeline := range config.Pipelines {
-		if len(configPipeline.Branch) == 0 {
-			configPipeline.Branch = DEFAULT_BRANCH
-		}
-
-		pipeline, err := wercker.FindPipeline(configPipeline.ApplicationPath, configPipeline.PipelineName)
-
-		if err != nil {
-			fmt.Printf("[application_path:%s][pipeline_name:%s] Error: %v\n", configPipeline.ApplicationPath, configPipeline.PipelineName, err)
-			continue
-		}
-
-		ret, err := wercker.TriggerNewRun(pipeline.Id, configPipeline.Branch)
-
-		if err != nil {
-			fmt.Printf("[application_path:%s][pipeline_name:%s][branch:%s] Error: %v\n", configPipeline.ApplicationPath, configPipeline.PipelineName, configPipeline.Branch, err)
-			continue
-		}
-
-		fmt.Printf("[application_path:%s][pipeline_name:%s][branch:%s] Triggered pipeline: %s\n", configPipeline.ApplicationPath, configPipeline.PipelineName, configPipeline.Branch, ret.Url)
+func perform(wercker WerckerTrigger, configPipeline ConfigPipeline) (run *WerckerRun, err error) {
+	if len(configPipeline.Branch) == 0 {
+		configPipeline.Branch = DEFAULT_BRANCH
 	}
+
+	pipeline, err := wercker.FindPipeline(configPipeline.ApplicationPath, configPipeline.PipelineName)
+
+	if err != nil {
+		return nil, err
+	}
+
+	ret, err := wercker.TriggerNewRun(pipeline.Id, configPipeline.Branch)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return ret, nil
 }

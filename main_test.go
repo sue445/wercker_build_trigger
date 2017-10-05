@@ -1,57 +1,85 @@
 package main
 
 import (
-	"fmt"
+	"errors"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
-type StubWercker struct {
+type MockWercker struct {
+	findPipeline  func(_appPath string, _pipelineName string) (pipeline *WerckerPipeline, err error)
+	triggerNewRun func(_pipelineId string, _branch string) (run *WerckerRun, err error)
 }
 
-func NewStubWercker() *StubWercker {
-	return new(StubWercker)
+func NewStubWercker() *MockWercker {
+	return new(MockWercker)
 }
 
-var pipelineCount int
+func (w *MockWercker) FindPipeline(appPath string, pipelineName string) (pipeline *WerckerPipeline, err error) {
+	return w.findPipeline(appPath, pipelineName)
+}
 
-func (w *StubWercker) FindPipeline(appPath string, pipelineName string) (pipeline *WerckerPipeline, err error) {
-	pipelineCount++
+func (w *MockWercker) TriggerNewRun(pipelineId string, branch string) (run *WerckerRun, err error) {
+	return w.triggerNewRun(pipelineId, branch)
+}
 
-	switch pipelineCount {
-	case 1:
-		pipeline = new(WerckerPipeline)
-		pipeline.Id = "abcdefg"
-		pipeline.Name = "build"
-		return pipeline, nil
+func TestPerform_Success(t *testing.T) {
+	appPath := "wercker/docs"
+	pipelineName := "build-wip"
+	branch := "develop"
+	url := "https://app.wercker.com/api/v3/runs/000000000000000000"
+	pipelineId := "xxxxxxxxxxxxxxxxxxxxxx"
 
-	default:
-		err := fmt.Errorf("NotFound %s, %s", appPath, pipelineName)
-		return nil, err
+	configPipeline := ConfigPipeline{
+		ApplicationPath: appPath,
+		PipelineName:    pipelineName,
+		Branch:          branch,
 	}
-}
-
-func (w *StubWercker) TriggerNewRun(pipelineId string, branch string) (run *WerckerRun, err error) {
-	run = new(WerckerRun)
-	run.Url = "https://app.wercker.com/api/v3/runs/588a61d30a002301003b44d5"
-	return run, nil
-
-}
-
-func TestPerform(t *testing.T) {
-	yamlData := `# test yaml
-pipelines:
-  - application_path: "wercker/docs"
-    pipeline_name: "build"
-    branch: "master"
-  - application_path: "sue445/xxxxxxxxxx"
-    pipeline_name: "xxxxxxxx"`
-
-	config, err := LoadConfigFromData(yamlData)
-	assert.NoError(t, err)
 
 	wercker := NewStubWercker()
+	wercker.findPipeline = func(_appPath string, _pipelineName string) (pipeline *WerckerPipeline, err error) {
+		assert.Equal(t, appPath, _appPath)
+		assert.Equal(t, pipelineName, _pipelineName)
 
-	pipelineCount = 0
-	perform(wercker, config)
+		pipeline = new(WerckerPipeline)
+		pipeline.Id = pipelineId
+		pipeline.Name = pipelineName
+		return pipeline, nil
+	}
+	wercker.triggerNewRun = func(_pipelineId string, _branch string) (run *WerckerRun, err error) {
+		assert.Equal(t, pipelineId, _pipelineId)
+		assert.Equal(t, branch, _branch)
+
+		run = new(WerckerRun)
+		run.Url = url
+		return run, nil
+	}
+
+	run, err := perform(wercker, configPipeline)
+
+	assert.NoError(t, err)
+	assert.Equal(t, url, run.Url)
+}
+
+func TestPerform_Error(t *testing.T) {
+	appPath := "wercker/docs"
+	pipelineName := "build"
+
+	configPipeline := ConfigPipeline{
+		ApplicationPath: appPath,
+		PipelineName:    pipelineName,
+	}
+
+	wercker := NewStubWercker()
+	wercker.findPipeline = func(_appPath string, _pipelineName string) (pipeline *WerckerPipeline, err error) {
+		assert.Equal(t, appPath, _appPath)
+		assert.Equal(t, pipelineName, _pipelineName)
+
+		return nil, errors.New("NotFound")
+	}
+
+	run, err := perform(wercker, configPipeline)
+
+	assert.Error(t, err)
+	assert.Nil(t, run)
 }

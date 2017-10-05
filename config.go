@@ -6,11 +6,13 @@ import (
 )
 
 type Config struct {
-	Pipelines []struct {
-		ApplicationPath string `yaml:"application_path"`
-		PipelineName    string `yaml:"pipeline_name"`
-		Branch          string `yaml:"branch"`
-	} `yaml:"pipelines"`
+	Pipelines []ConfigPipeline `yaml:"pipelines"`
+}
+
+type ConfigPipeline struct {
+	ApplicationPath string `yaml:"application_path"`
+	PipelineName    string `yaml:"pipeline_name"`
+	Branch          string `yaml:"branch"`
 }
 
 func LoadConfigFromData(yamlData string) (Config, error) {
