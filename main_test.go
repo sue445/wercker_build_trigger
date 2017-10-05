@@ -35,23 +35,33 @@ func (w *StubWercker) TriggerNewRun(pipelineId string, branch string) (run *Werc
 	run = new(WerckerRun)
 	run.Url = "https://app.wercker.com/api/v3/runs/588a61d30a002301003b44d5"
 	return run, nil
-
 }
 
-func TestPerform(t *testing.T) {
-	yamlData := `# test yaml
-pipelines:
-  - application_path: "wercker/docs"
-    pipeline_name: "build"
-    branch: "master"
-  - application_path: "sue445/xxxxxxxxxx"
-    pipeline_name: "xxxxxxxx"`
-
-	config, err := LoadConfigFromData(yamlData)
-	assert.NoError(t, err)
+func TestPerform_Success(t *testing.T) {
+	configPipeline := ConfigPipeline{
+		ApplicationPath: "wercker/docs",
+		PipelineName:    "build",
+		Branch:          "master",
+	}
 
 	wercker := NewStubWercker()
 
-	pipelineCount = 0
-	perform(wercker, config)
+	run, err := perform(wercker, configPipeline)
+
+	assert.NoError(t, err)
+	assert.Equal(t, "https://app.wercker.com/api/v3/runs/588a61d30a002301003b44d5", run.Url)
+}
+
+func TestPerform_Error(t *testing.T) {
+	configPipeline := ConfigPipeline{
+		ApplicationPath: "sue445/xxxxxxxxxx",
+		PipelineName:    "build",
+	}
+
+	wercker := NewStubWercker()
+
+	run, err := perform(wercker, configPipeline)
+
+	assert.Error(t, err)
+	assert.Nil(t, run)
 }
