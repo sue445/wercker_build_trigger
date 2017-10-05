@@ -55,7 +55,7 @@ func TestPerform_Success_MaxiumKeys(t *testing.T) {
 		return run, nil
 	}
 
-	run, err := perform(wercker, configPipeline)
+	run, err := perform(wercker, &configPipeline)
 
 	assert.NoError(t, err)
 	assert.Equal(t, url, run.Url)
@@ -89,10 +89,13 @@ func TestPerform_Success_MinimumKeys(t *testing.T) {
 		return run, nil
 	}
 
-	run, err := perform(wercker, configPipeline)
+	run, err := perform(wercker, &configPipeline)
 
 	assert.NoError(t, err)
 	assert.Equal(t, url, run.Url)
+
+	assert.Equal(t, DEFAULT_BRANCH, configPipeline.Branch)
+	assert.Equal(t, DEFAULT_PIPELINE_NAME, configPipeline.PipelineName)
 }
 
 func TestPerform_Error(t *testing.T) {
@@ -112,7 +115,7 @@ func TestPerform_Error(t *testing.T) {
 		return nil, errors.New("NotFound")
 	}
 
-	run, err := perform(wercker, configPipeline)
+	run, err := perform(wercker, &configPipeline)
 
 	assert.Error(t, err)
 	assert.Nil(t, run)

@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	DEFAULT_BRANCH = "master"
+	DEFAULT_BRANCH        = "master"
 	DEFAULT_PIPELINE_NAME = "build"
 )
 
@@ -46,7 +46,7 @@ func main() {
 	wercker := NewWercker(token)
 
 	for _, configPipeline := range config.Pipelines {
-		run, err := perform(wercker, configPipeline)
+		run, err := perform(wercker, &configPipeline)
 
 		if err == nil {
 			fmt.Printf("[application_path:%s][pipeline_name:%s][branch:%s] Triggered pipeline: %s\n", configPipeline.ApplicationPath, configPipeline.PipelineName, configPipeline.Branch, run.Url)
@@ -60,7 +60,7 @@ func printVersion() {
 	fmt.Printf("wercker_build_trigger v%s, build %s\n", Version, Revision)
 }
 
-func perform(wercker WerckerTrigger, configPipeline ConfigPipeline) (run *WerckerRun, err error) {
+func perform(wercker WerckerTrigger, configPipeline *ConfigPipeline) (run *WerckerRun, err error) {
 	if len(configPipeline.Branch) == 0 {
 		configPipeline.Branch = DEFAULT_BRANCH
 	}
