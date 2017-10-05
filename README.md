@@ -48,8 +48,8 @@ pipelines:
 
 * `application_path` : application path **(required)**
   * If wercker application url is https://app.wercker.com/sue445/wercker_build_trigger, `application_path` is `sue445/wercker_build_trigger`
-* `pipeline_name` : pipeline name **(required)**
-  * e.g.) build
+* `pipeline_name` : pipeline name 
+  *  default is `build`
 * `branch` : Branch you want to build
   *  default is `master`
 

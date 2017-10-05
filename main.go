@@ -7,6 +7,7 @@ import (
 
 const (
 	DEFAULT_BRANCH = "master"
+	DEFAULT_PIPELINE_NAME = "build"
 )
 
 var (
@@ -62,6 +63,9 @@ func printVersion() {
 func perform(wercker WerckerTrigger, configPipeline ConfigPipeline) (run *WerckerRun, err error) {
 	if len(configPipeline.Branch) == 0 {
 		configPipeline.Branch = DEFAULT_BRANCH
+	}
+	if len(configPipeline.PipelineName) == 0 {
+		configPipeline.PipelineName = DEFAULT_PIPELINE_NAME
 	}
 
 	pipeline, err := wercker.FindPipeline(configPipeline.ApplicationPath, configPipeline.PipelineName)
