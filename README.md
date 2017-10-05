@@ -44,7 +44,6 @@ pipelines:
     branch: "master"
   - application_path: "sue445/wercker_build_trigger"
     pipeline_name: "build"
-    branch: "master"
 ```
 
 * `application_path` : application path **(required)**
