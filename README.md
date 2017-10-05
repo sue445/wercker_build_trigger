@@ -53,3 +53,13 @@ pipelines:
   * e.g.) build
 * `branch` : Branch you want to build
   *  default is `master`
+
+## ProTip
+### Weekly build
+e.g.) Run a build every Sunday at 3:00
+
+crontab
+
+```
+0 3 * * 0 /path/to/wercker_build_trigger --config /path/to/wercker_build_trigger.yml --token xxxxxxx
+```
