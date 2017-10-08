@@ -33,11 +33,9 @@ build:
           go get -u github.com/golang/dep/cmd/dep
           dep ensure
 
-    # Test the project
-    - script:
-        name: go test
-        code: |
-          go test
+    # Test the project and tally the coverage
+    - tcnksm/goveralls:
+      token: $COVERALLS_TOKEN
 
     - script:
         name: go vet
