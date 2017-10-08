@@ -27,11 +27,8 @@ build:
     - setup-go-workspace
 
     # Gets the dependencies
-    - script:
-        name: setup
-        code: |
-          go get -u github.com/golang/dep/cmd/dep
-          dep ensure
+    # https://github.com/kyokomi/wercker-step-dep
+    - kyokomi/dep
 
     # Test the project and tally the coverage
     # https://github.com/tcnksm/wercker-step-goveralls
