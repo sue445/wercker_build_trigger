@@ -2,7 +2,7 @@
 Trigger [Wercker](http://www.wercker.com/) build
 
 [![Go project version](https://badge.fury.io/go/github.com%2Fsue445%2Fwercker_build_trigger.svg)](https://badge.fury.io/go/github.com%2Fsue445%2Fwercker_build_trigger)
-[![Coverage Status](https://coveralls.io/repos/github/sue445/wercker_build_trigger/badge.svg)](https://coveralls.io/github/sue445/wercker_build_trigger)
+[![Coverage Status](https://coveralls.io/repos/github/sue445/wercker_build_trigger/badge.svg?branch=HEAD)](https://coveralls.io/github/sue445/wercker_build_trigger?branch=HEAD)
 
 [![wercker status](https://app.wercker.com/status/e4c5f1e0f5898b33ffdc26ca29ef4e2c/m/master "wercker status")](https://app.wercker.com/project/byKey/e4c5f1e0f5898b33ffdc26ca29ef4e2c)
 
