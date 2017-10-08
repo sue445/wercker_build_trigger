@@ -1,9 +1,9 @@
 # wercker_build_trigger
 Trigger [Wercker](http://www.wercker.com/) build
 
-[![wercker status](https://app.wercker.com/status/e4c5f1e0f5898b33ffdc26ca29ef4e2c/m/master "wercker status")](https://app.wercker.com/project/byKey/e4c5f1e0f5898b33ffdc26ca29ef4e2c)
-
 [![Coverage Status](https://coveralls.io/repos/github/sue445/wercker_build_trigger/badge.svg)](https://coveralls.io/github/sue445/wercker_build_trigger)
+
+[![wercker status](https://app.wercker.com/status/e4c5f1e0f5898b33ffdc26ca29ef4e2c/m/master "wercker status")](https://app.wercker.com/project/byKey/e4c5f1e0f5898b33ffdc26ca29ef4e2c)
 
 ## Getting
 
@@ -49,7 +49,7 @@ pipelines:
 
 * `application_path` : application path **(required)**
   * If wercker application url is https://app.wercker.com/sue445/wercker_build_trigger, `application_path` is `sue445/wercker_build_trigger`
-* `pipeline_name` : pipeline name 
+* `pipeline_name` : pipeline name
   *  default is `build`
 * `branch` : Branch you want to build
   *  default is `master`
