@@ -93,7 +93,7 @@ func TestWercker_GetRuns(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
-	url := fmt.Sprintf("https://app.wercker.com/api/v3/runs?applicationId=%s&limit=%d&skip=%d", applicationId, MAX_LIMIT, skip)
+	url := fmt.Sprintf("https://app.wercker.com/api/v3/runs?applicationId=%s&limit=%d&skip=%d", applicationId, MaxLimit, skip)
 
 	httpmock.RegisterResponder(
 		"GET", url,
@@ -127,7 +127,7 @@ func TestWercker_FindPipeline(t *testing.T) {
 	)
 
 	httpmock.RegisterResponder(
-		"GET", fmt.Sprintf("https://app.wercker.com/api/v3/runs?applicationId=%s&limit=%d&skip=%d", applicationId, MAX_LIMIT, skip),
+		"GET", fmt.Sprintf("https://app.wercker.com/api/v3/runs?applicationId=%s&limit=%d&skip=%d", applicationId, MaxLimit, skip),
 		httpmock.NewStringResponder(200, readFile("test/GetRuns.json")),
 	)
 

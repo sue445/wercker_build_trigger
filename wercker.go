@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	MAX_LIMIT = 20
+	MaxLimit = 20
 )
 
 type Wercker struct {
@@ -95,7 +95,7 @@ func (w *Wercker) GetRuns(applicationId string, skip int) (runs []WerckerRun, er
 	values := url.Values{}
 	values.Add("applicationId", applicationId)
 	values.Add("skip", strconv.Itoa(skip))
-	values.Add("limit", strconv.Itoa(MAX_LIMIT))
+	values.Add("limit", strconv.Itoa(MaxLimit))
 	req.URL.RawQuery = values.Encode()
 
 	body, err := w.execute(req)
@@ -128,11 +128,11 @@ func (w *Wercker) FindPipeline(applicationPath string, pipelineName string) (pip
 			}
 		}
 
-		if len(runs) < MAX_LIMIT {
+		if len(runs) < MaxLimit {
 			return nil, fmt.Errorf("Not Found pipeline: %s", pipelineName)
 		}
 
-		skip += MAX_LIMIT
+		skip += MaxLimit
 	}
 }
 
