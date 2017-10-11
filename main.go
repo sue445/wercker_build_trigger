@@ -17,7 +17,9 @@ var (
 	// Version represents app version (injected from ldflags)
 	Version string
 
-	Revision       string
+	// Revision represents app revision (injected from ldflags)
+	Revision string
+
 	configFile     string
 	token          string
 	isPrintVersion bool
