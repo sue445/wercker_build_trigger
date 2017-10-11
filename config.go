@@ -29,6 +29,7 @@ func LoadConfigFromData(yamlData string) (Config, error) {
 	return c, nil
 }
 
+// LoadConfigFromFile load config from yaml file
 func LoadConfigFromFile(yamlFile string) (Config, error) {
 	buf, err := ioutil.ReadFile(yamlFile)
 
