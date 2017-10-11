@@ -44,6 +44,7 @@ type WerckerPipeline struct {
 	Name string `json:"name"`
 }
 
+// WerckerTriggerNewRunParam represents request parameter of TriggerNewRun API
 type WerckerTriggerNewRunParam struct {
 	PipelineId string `json:"pipelineId"`
 	Branch     string `json:"branch"`
