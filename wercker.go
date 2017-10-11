@@ -64,6 +64,7 @@ type WerckerTrigger interface {
 	TriggerNewRun(pipelineId string, branch string) (run *WerckerRun, err error)
 }
 
+// NewWercker returns new Wercker object
 func NewWercker(token string) *Wercker {
 	w := new(Wercker)
 	w.token = token
