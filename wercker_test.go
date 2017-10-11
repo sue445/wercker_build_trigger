@@ -86,14 +86,14 @@ func TestWercker_GetApplication(t *testing.T) {
 
 func TestWercker_GetRuns(t *testing.T) {
 	token := "api_token"
-	applicationId := "54c9168980c7075225004157"
+	applicationID := "54c9168980c7075225004157"
 	skip := 0
 
 	// mock http GET
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
-	url := fmt.Sprintf("https://app.wercker.com/api/v3/runs?applicationId=%s&limit=%d&skip=%d", applicationId, MaxLimit, skip)
+	url := fmt.Sprintf("https://app.wercker.com/api/v3/runs?applicationId=%s&limit=%d&skip=%d", applicationID, MaxLimit, skip)
 
 	httpmock.RegisterResponder(
 		"GET", url,
@@ -102,7 +102,7 @@ func TestWercker_GetRuns(t *testing.T) {
 
 	wercker := NewWercker(token)
 
-	ret, err := wercker.GetRuns(applicationId, skip)
+	ret, err := wercker.GetRuns(applicationID, skip)
 
 	assert.NoError(t, err)
 	assert.Equal(t, "588a61d30a002301003b44d5", ret[0].ID)
