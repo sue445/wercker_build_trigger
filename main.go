@@ -6,6 +6,7 @@ import (
 )
 
 const (
+	// DefaultBranch represents default branch name when branch is undefined in config file
 	DefaultBranch         = "master"
 	DEFAULT_PIPELINE_NAME = "build"
 )
