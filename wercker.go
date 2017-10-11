@@ -16,6 +16,7 @@ const (
 	MaxLimit = 20
 )
 
+// Wercker API client
 type Wercker struct {
 	token string
 }
