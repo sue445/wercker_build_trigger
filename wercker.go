@@ -21,6 +21,7 @@ type Wercker struct {
 	token string
 }
 
+// WerckerApplication represents a `application` resource
 type WerckerApplication struct {
 	Id string `json:"id"`
 }
