@@ -7,7 +7,9 @@ import (
 
 const (
 	// DefaultBranch represents default branch name when branch is undefined in config file
-	DefaultBranch       = "master"
+	DefaultBranch = "master"
+
+	// DefaultPipelineName represents default pipeline name when pipeline_name is undefined in config file
 	DefaultPipelineName = "build"
 )
 
