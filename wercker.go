@@ -58,6 +58,7 @@ type WerckerError struct {
 	Message    string `json:"message"`
 }
 
+// WerckerTrigger represents interface of API client (for stubbing from test)
 type WerckerTrigger interface {
 	FindPipeline(appPath string, pipelineName string) (pipeline *WerckerPipeline, err error)
 	TriggerNewRun(pipelineId string, branch string) (run *WerckerRun, err error)
