@@ -12,6 +12,7 @@ import (
 )
 
 const (
+	// MaxLimit represents paging per 1 page
 	MaxLimit = 20
 )
 
