@@ -28,7 +28,7 @@ func TestPerform_Success_MaxiumKeys(t *testing.T) {
 	pipelineName := "build-wip"
 	branch := "develop"
 	url := "https://app.wercker.com/api/v3/runs/000000000000000000"
-	pipelineId := "xxxxxxxxxxxxxxxxxxxxxx"
+	pipelineID := "xxxxxxxxxxxxxxxxxxxxxx"
 
 	configPipeline := ConfigPipeline{
 		ApplicationPath: appPath,
@@ -42,12 +42,12 @@ func TestPerform_Success_MaxiumKeys(t *testing.T) {
 		assert.Equal(t, pipelineName, _pipelineName)
 
 		pipeline = new(WerckerPipeline)
-		pipeline.Id = pipelineId
+		pipeline.Id = pipelineID
 		pipeline.Name = pipelineName
 		return pipeline, nil
 	}
 	wercker.triggerNewRun = func(_pipelineId string, _branch string) (run *WerckerRun, err error) {
-		assert.Equal(t, pipelineId, _pipelineId)
+		assert.Equal(t, pipelineID, _pipelineId)
 		assert.Equal(t, branch, _branch)
 
 		run = new(WerckerRun)
