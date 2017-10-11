@@ -51,6 +51,7 @@ type WerckerTriggerNewRunParam struct {
 	Message    string `json:"message"`
 }
 
+// WerckerError represents error response body
 type WerckerError struct {
 	StatusCode int    `json:"statusCode"`
 	Error      string `json:"error"`
