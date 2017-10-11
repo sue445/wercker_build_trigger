@@ -10,6 +10,7 @@ type Config struct {
 	Pipelines []ConfigPipeline `yaml:"pipelines"`
 }
 
+// ConfigPipeline represents pipelines element of config file
 type ConfigPipeline struct {
 	ApplicationPath string `yaml:"application_path"`
 	PipelineName    string `yaml:"pipeline_name"`
