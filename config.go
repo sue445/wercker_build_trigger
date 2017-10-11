@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 )
 
+// Config represents config file
 type Config struct {
 	Pipelines []ConfigPipeline `yaml:"pipelines"`
 }
