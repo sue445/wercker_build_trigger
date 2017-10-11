@@ -17,6 +17,7 @@ type ConfigPipeline struct {
 	Branch          string `yaml:"branch"`
 }
 
+// LoadConfigFromData load config from yaml data
 func LoadConfigFromData(yamlData string) (Config, error) {
 	c := Config{}
 
