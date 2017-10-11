@@ -36,7 +36,7 @@ func TestWercker_TriggerNewRun(t *testing.T) {
 			if err := json.NewDecoder(req.Body).Decode(&param); err != nil {
 				return httpmock.NewStringResponse(400, ""), nil
 			}
-			assert.Equal(t, pipelineId, param.PipelineId)
+			assert.Equal(t, pipelineId, param.PipelineID)
 			assert.Equal(t, branch, param.Branch)
 			assert.Equal(t, message, param.Message)
 

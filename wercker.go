@@ -46,7 +46,7 @@ type WerckerPipeline struct {
 
 // WerckerTriggerNewRunParam represents request parameter of TriggerNewRun API
 type WerckerTriggerNewRunParam struct {
-	PipelineId string `json:"pipelineId"`
+	PipelineID string `json:"pipelineId"`
 	Branch     string `json:"branch"`
 	Message    string `json:"message"`
 }
@@ -152,7 +152,7 @@ func (w *Wercker) FindPipeline(applicationPath string, pipelineName string) (pip
 func (w *Wercker) TriggerNewRun(pipelineId string, branch string) (run *WerckerRun, err error) {
 	currentTime := time.Now().Format("2006-01-02 15:04:05")
 	params := WerckerTriggerNewRunParam{
-		PipelineId: pipelineId,
+		PipelineID: pipelineId,
 		Branch:     branch,
 		Message:    "wercker_build_trigger: " + currentTime,
 	}
