@@ -40,7 +40,7 @@ func TestWercker_TriggerNewRun(t *testing.T) {
 			assert.Equal(t, branch, param.Branch)
 			assert.Equal(t, message, param.Message)
 
-			response := WerckerRun{Url: runUrl, Message: param.Message}
+			response := WerckerRun{URL: runUrl, Message: param.Message}
 
 			resp, err := httpmock.NewJsonResponse(200, response)
 			if err != nil {
@@ -56,7 +56,7 @@ func TestWercker_TriggerNewRun(t *testing.T) {
 
 	assert.NoError(t, err)
 
-	assert.Equal(t, runUrl, ret.Url)
+	assert.Equal(t, runUrl, ret.URL)
 	assert.Equal(t, message, ret.Message)
 }
 

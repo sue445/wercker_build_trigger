@@ -29,7 +29,7 @@ type WerckerApplication struct {
 // WerckerRun represents a `run` resource
 type WerckerRun struct {
 	ID         string          `json:"id"`
-	Url        string          `json:"url"`
+	URL        string          `json:"url"`
 	CreatedAt  string          `json:"createdAt"`
 	CommitHash string          `json:"commitHash"`
 	Message    string          `json:"message"`
