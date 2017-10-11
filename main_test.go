@@ -19,8 +19,8 @@ func (w *MockWercker) FindPipeline(appPath string, pipelineName string) (pipelin
 	return w.findPipeline(appPath, pipelineName)
 }
 
-func (w *MockWercker) TriggerNewRun(pipelineId string, branch string) (run *WerckerRun, err error) {
-	return w.triggerNewRun(pipelineId, branch)
+func (w *MockWercker) TriggerNewRun(pipelineID string, branch string) (run *WerckerRun, err error) {
+	return w.triggerNewRun(pipelineID, branch)
 }
 
 func TestPerform_Success_MaxiumKeys(t *testing.T) {
@@ -28,7 +28,7 @@ func TestPerform_Success_MaxiumKeys(t *testing.T) {
 	pipelineName := "build-wip"
 	branch := "develop"
 	url := "https://app.wercker.com/api/v3/runs/000000000000000000"
-	pipelineId := "xxxxxxxxxxxxxxxxxxxxxx"
+	pipelineID := "xxxxxxxxxxxxxxxxxxxxxx"
 
 	configPipeline := ConfigPipeline{
 		ApplicationPath: appPath,
@@ -42,29 +42,29 @@ func TestPerform_Success_MaxiumKeys(t *testing.T) {
 		assert.Equal(t, pipelineName, _pipelineName)
 
 		pipeline = new(WerckerPipeline)
-		pipeline.Id = pipelineId
+		pipeline.ID = pipelineID
 		pipeline.Name = pipelineName
 		return pipeline, nil
 	}
 	wercker.triggerNewRun = func(_pipelineId string, _branch string) (run *WerckerRun, err error) {
-		assert.Equal(t, pipelineId, _pipelineId)
+		assert.Equal(t, pipelineID, _pipelineId)
 		assert.Equal(t, branch, _branch)
 
 		run = new(WerckerRun)
-		run.Url = url
+		run.URL = url
 		return run, nil
 	}
 
 	run, err := perform(wercker, &configPipeline)
 
 	assert.NoError(t, err)
-	assert.Equal(t, url, run.Url)
+	assert.Equal(t, url, run.URL)
 }
 
 func TestPerform_Success_MinimumKeys(t *testing.T) {
 	appPath := "wercker/docs"
 	url := "https://app.wercker.com/api/v3/runs/000000000000000000"
-	pipelineId := "xxxxxxxxxxxxxxxxxxxxxx"
+	pipelineID := "xxxxxxxxxxxxxxxxxxxxxx"
 
 	configPipeline := ConfigPipeline{
 		ApplicationPath: appPath,
@@ -73,29 +73,29 @@ func TestPerform_Success_MinimumKeys(t *testing.T) {
 	wercker := NewStubWercker()
 	wercker.findPipeline = func(_appPath string, _pipelineName string) (pipeline *WerckerPipeline, err error) {
 		assert.Equal(t, appPath, _appPath)
-		assert.Equal(t, DEFAULT_PIPELINE_NAME, _pipelineName)
+		assert.Equal(t, DefaultPipelineName, _pipelineName)
 
 		pipeline = new(WerckerPipeline)
-		pipeline.Id = pipelineId
-		pipeline.Name = DEFAULT_PIPELINE_NAME
+		pipeline.ID = pipelineID
+		pipeline.Name = DefaultPipelineName
 		return pipeline, nil
 	}
 	wercker.triggerNewRun = func(_pipelineId string, _branch string) (run *WerckerRun, err error) {
-		assert.Equal(t, pipelineId, _pipelineId)
-		assert.Equal(t, DEFAULT_BRANCH, _branch)
+		assert.Equal(t, pipelineID, _pipelineId)
+		assert.Equal(t, DefaultBranch, _branch)
 
 		run = new(WerckerRun)
-		run.Url = url
+		run.URL = url
 		return run, nil
 	}
 
 	run, err := perform(wercker, &configPipeline)
 
 	assert.NoError(t, err)
-	assert.Equal(t, url, run.Url)
+	assert.Equal(t, url, run.URL)
 
-	assert.Equal(t, DEFAULT_BRANCH, configPipeline.Branch)
-	assert.Equal(t, DEFAULT_PIPELINE_NAME, configPipeline.PipelineName)
+	assert.Equal(t, DefaultBranch, configPipeline.Branch)
+	assert.Equal(t, DefaultPipelineName, configPipeline.PipelineName)
 }
 
 func TestPerform_Error(t *testing.T) {

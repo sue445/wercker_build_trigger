@@ -14,7 +14,7 @@ import (
 
 func TestWercker_TriggerNewRun(t *testing.T) {
 	token := "api_token"
-	pipelineId := "123456789012345678901234"
+	pipelineID := "123456789012345678901234"
 	branch := "develop"
 
 	// stub Time.Now()
@@ -26,7 +26,7 @@ func TestWercker_TriggerNewRun(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
-	runUrl := "https://app.wercker.com/api/v3/runs/577a36013828f9673b035730"
+	runURL := "https://app.wercker.com/api/v3/runs/577a36013828f9673b035730"
 	message := "wercker_build_trigger: 2017-09-12 01:02:03"
 
 	httpmock.RegisterResponder(
@@ -36,11 +36,11 @@ func TestWercker_TriggerNewRun(t *testing.T) {
 			if err := json.NewDecoder(req.Body).Decode(&param); err != nil {
 				return httpmock.NewStringResponse(400, ""), nil
 			}
-			assert.Equal(t, pipelineId, param.PipelineId)
+			assert.Equal(t, pipelineID, param.PipelineID)
 			assert.Equal(t, branch, param.Branch)
 			assert.Equal(t, message, param.Message)
 
-			response := WerckerRun{Url: runUrl, Message: param.Message}
+			response := WerckerRun{URL: runURL, Message: param.Message}
 
 			resp, err := httpmock.NewJsonResponse(200, response)
 			if err != nil {
@@ -52,18 +52,18 @@ func TestWercker_TriggerNewRun(t *testing.T) {
 
 	wercker := NewWercker(token)
 
-	ret, err := wercker.TriggerNewRun(pipelineId, branch)
+	ret, err := wercker.TriggerNewRun(pipelineID, branch)
 
 	assert.NoError(t, err)
 
-	assert.Equal(t, runUrl, ret.Url)
+	assert.Equal(t, runURL, ret.URL)
 	assert.Equal(t, message, ret.Message)
 }
 
 func TestWercker_GetApplication(t *testing.T) {
 	token := "api_token"
 	applicationPath := "wercker/docs"
-	applicationId := "54c9168980c7075225004157"
+	applicationID := "54c9168980c7075225004157"
 
 	// mock http GET
 	httpmock.Activate()
@@ -81,19 +81,19 @@ func TestWercker_GetApplication(t *testing.T) {
 	ret, err := wercker.GetApplication(applicationPath)
 
 	assert.NoError(t, err)
-	assert.Equal(t, applicationId, ret.Id)
+	assert.Equal(t, applicationID, ret.ID)
 }
 
 func TestWercker_GetRuns(t *testing.T) {
 	token := "api_token"
-	applicationId := "54c9168980c7075225004157"
+	applicationID := "54c9168980c7075225004157"
 	skip := 0
 
 	// mock http GET
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
-	url := fmt.Sprintf("https://app.wercker.com/api/v3/runs?applicationId=%s&limit=%d&skip=%d", applicationId, MAX_LIMIT, skip)
+	url := fmt.Sprintf("https://app.wercker.com/api/v3/runs?applicationId=%s&limit=%d&skip=%d", applicationID, MaxLimit, skip)
 
 	httpmock.RegisterResponder(
 		"GET", url,
@@ -102,11 +102,11 @@ func TestWercker_GetRuns(t *testing.T) {
 
 	wercker := NewWercker(token)
 
-	ret, err := wercker.GetRuns(applicationId, skip)
+	ret, err := wercker.GetRuns(applicationID, skip)
 
 	assert.NoError(t, err)
-	assert.Equal(t, "588a61d30a002301003b44d5", ret[0].Id)
-	assert.Equal(t, "54c9168980c7075225004157", ret[0].Pipeline.Id)
+	assert.Equal(t, "588a61d30a002301003b44d5", ret[0].ID)
+	assert.Equal(t, "54c9168980c7075225004157", ret[0].Pipeline.ID)
 	assert.Equal(t, "build", ret[0].Pipeline.Name)
 }
 
@@ -114,7 +114,7 @@ func TestWercker_FindPipeline(t *testing.T) {
 	token := "api_token"
 	applicationPath := "wercker/docs"
 	pipelineName := "build"
-	applicationId := "54c9168980c7075225004157"
+	applicationID := "54c9168980c7075225004157"
 	skip := 0
 
 	// mock http GET
@@ -127,7 +127,7 @@ func TestWercker_FindPipeline(t *testing.T) {
 	)
 
 	httpmock.RegisterResponder(
-		"GET", fmt.Sprintf("https://app.wercker.com/api/v3/runs?applicationId=%s&limit=%d&skip=%d", applicationId, MAX_LIMIT, skip),
+		"GET", fmt.Sprintf("https://app.wercker.com/api/v3/runs?applicationId=%s&limit=%d&skip=%d", applicationID, MaxLimit, skip),
 		httpmock.NewStringResponder(200, readFile("test/GetRuns.json")),
 	)
 
@@ -136,7 +136,7 @@ func TestWercker_FindPipeline(t *testing.T) {
 	pipeline, err := wercker.FindPipeline(applicationPath, pipelineName)
 
 	assert.NoError(t, err)
-	assert.Equal(t, "54c9168980c7075225004157", pipeline.Id)
+	assert.Equal(t, "54c9168980c7075225004157", pipeline.ID)
 	assert.Equal(t, "build", pipeline.Name)
 }
 

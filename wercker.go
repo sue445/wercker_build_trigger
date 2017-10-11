@@ -12,20 +12,24 @@ import (
 )
 
 const (
-	MAX_LIMIT = 20
+	// MaxLimit represents paging per 1 page
+	MaxLimit = 20
 )
 
+// Wercker API client
 type Wercker struct {
 	token string
 }
 
+// WerckerApplication represents a `application` resource
 type WerckerApplication struct {
-	Id string `json:"id"`
+	ID string `json:"id"`
 }
 
+// WerckerRun represents a `run` resource
 type WerckerRun struct {
-	Id         string          `json:"id"`
-	Url        string          `json:"url"`
+	ID         string          `json:"id"`
+	URL        string          `json:"url"`
 	CreatedAt  string          `json:"createdAt"`
 	CommitHash string          `json:"commitHash"`
 	Message    string          `json:"message"`
@@ -34,34 +38,40 @@ type WerckerRun struct {
 	Pipeline   WerckerPipeline `json:"pipeline"`
 }
 
+// WerckerPipeline represents a `pipeline` resource
 type WerckerPipeline struct {
-	Id   string `json:"id"`
+	ID   string `json:"id"`
 	Name string `json:"name"`
 }
 
+// WerckerTriggerNewRunParam represents request parameter of TriggerNewRun API
 type WerckerTriggerNewRunParam struct {
-	PipelineId string `json:"pipelineId"`
+	PipelineID string `json:"pipelineId"`
 	Branch     string `json:"branch"`
 	Message    string `json:"message"`
 }
 
+// WerckerError represents error response body
 type WerckerError struct {
 	StatusCode int    `json:"statusCode"`
 	Error      string `json:"error"`
 	Message    string `json:"message"`
 }
 
+// WerckerTrigger represents interface of API client (for stubbing from test)
 type WerckerTrigger interface {
 	FindPipeline(appPath string, pipelineName string) (pipeline *WerckerPipeline, err error)
-	TriggerNewRun(pipelineId string, branch string) (run *WerckerRun, err error)
+	TriggerNewRun(pipelineID string, branch string) (run *WerckerRun, err error)
 }
 
+// NewWercker returns new Wercker object
 func NewWercker(token string) *Wercker {
 	w := new(Wercker)
 	w.token = token
 	return w
 }
 
+// GetApplication gets `application` with specified application path
 func (w *Wercker) GetApplication(applicationPath string) (app *WerckerApplication, err error) {
 	req, err := http.NewRequest(
 		"GET",
@@ -82,7 +92,8 @@ func (w *Wercker) GetApplication(applicationPath string) (app *WerckerApplicatio
 	return app, err
 }
 
-func (w *Wercker) GetRuns(applicationId string, skip int) (runs []WerckerRun, err error) {
+// GetRuns gets `runs` with specified application
+func (w *Wercker) GetRuns(applicationID string, skip int) (runs []WerckerRun, err error) {
 	req, err := http.NewRequest(
 		"GET",
 		"https://app.wercker.com/api/v3/runs",
@@ -93,9 +104,9 @@ func (w *Wercker) GetRuns(applicationId string, skip int) (runs []WerckerRun, er
 	}
 
 	values := url.Values{}
-	values.Add("applicationId", applicationId)
+	values.Add("applicationId", applicationID)
 	values.Add("skip", strconv.Itoa(skip))
-	values.Add("limit", strconv.Itoa(MAX_LIMIT))
+	values.Add("limit", strconv.Itoa(MaxLimit))
 	req.URL.RawQuery = values.Encode()
 
 	body, err := w.execute(req)
@@ -108,6 +119,7 @@ func (w *Wercker) GetRuns(applicationId string, skip int) (runs []WerckerRun, er
 	return runs, err
 }
 
+// FindPipeline find `pipeline` with specified application path and pipeline name
 func (w *Wercker) FindPipeline(applicationPath string, pipelineName string) (pipeline *WerckerPipeline, err error) {
 	application, err := w.GetApplication(applicationPath)
 	if err != nil {
@@ -117,7 +129,7 @@ func (w *Wercker) FindPipeline(applicationPath string, pipelineName string) (pip
 	skip := 0
 
 	for {
-		runs, err := w.GetRuns(application.Id, skip)
+		runs, err := w.GetRuns(application.ID, skip)
 		if err != nil {
 			return nil, err
 		}
@@ -128,18 +140,19 @@ func (w *Wercker) FindPipeline(applicationPath string, pipelineName string) (pip
 			}
 		}
 
-		if len(runs) < MAX_LIMIT {
+		if len(runs) < MaxLimit {
 			return nil, fmt.Errorf("Not Found pipeline: %s", pipelineName)
 		}
 
-		skip += MAX_LIMIT
+		skip += MaxLimit
 	}
 }
 
-func (w *Wercker) TriggerNewRun(pipelineId string, branch string) (run *WerckerRun, err error) {
+// TriggerNewRun trigger new run with specified pipeline id and branch
+func (w *Wercker) TriggerNewRun(pipelineID string, branch string) (run *WerckerRun, err error) {
 	currentTime := time.Now().Format("2006-01-02 15:04:05")
 	params := WerckerTriggerNewRunParam{
-		PipelineId: pipelineId,
+		PipelineID: pipelineID,
 		Branch:     branch,
 		Message:    "wercker_build_trigger: " + currentTime,
 	}

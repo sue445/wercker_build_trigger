@@ -6,13 +6,20 @@ import (
 )
 
 const (
-	DEFAULT_BRANCH        = "master"
-	DEFAULT_PIPELINE_NAME = "build"
+	// DefaultBranch represents default branch name when branch is undefined in config file
+	DefaultBranch = "master"
+
+	// DefaultPipelineName represents default pipeline name when pipeline_name is undefined in config file
+	DefaultPipelineName = "build"
 )
 
 var (
-	Version        string
-	Revision       string
+	// Version represents app version (injected from ldflags)
+	Version string
+
+	// Revision represents app revision (injected from ldflags)
+	Revision string
+
 	configFile     string
 	token          string
 	isPrintVersion bool
@@ -49,7 +56,7 @@ func main() {
 		run, err := perform(wercker, &configPipeline)
 
 		if err == nil {
-			fmt.Printf("[application_path:%s][pipeline_name:%s][branch:%s] Triggered pipeline: %s\n", configPipeline.ApplicationPath, configPipeline.PipelineName, configPipeline.Branch, run.Url)
+			fmt.Printf("[application_path:%s][pipeline_name:%s][branch:%s] Triggered pipeline: %s\n", configPipeline.ApplicationPath, configPipeline.PipelineName, configPipeline.Branch, run.URL)
 		} else {
 			fmt.Printf("[application_path:%s][pipeline_name:%s] Error: %v\n", configPipeline.ApplicationPath, configPipeline.PipelineName, err)
 		}
@@ -62,10 +69,10 @@ func printVersion() {
 
 func perform(wercker WerckerTrigger, configPipeline *ConfigPipeline) (run *WerckerRun, err error) {
 	if len(configPipeline.Branch) == 0 {
-		configPipeline.Branch = DEFAULT_BRANCH
+		configPipeline.Branch = DefaultBranch
 	}
 	if len(configPipeline.PipelineName) == 0 {
-		configPipeline.PipelineName = DEFAULT_PIPELINE_NAME
+		configPipeline.PipelineName = DefaultPipelineName
 	}
 
 	pipeline, err := wercker.FindPipeline(configPipeline.ApplicationPath, configPipeline.PipelineName)
@@ -74,7 +81,7 @@ func perform(wercker WerckerTrigger, configPipeline *ConfigPipeline) (run *Werck
 		return nil, err
 	}
 
-	ret, err := wercker.TriggerNewRun(pipeline.Id, configPipeline.Branch)
+	ret, err := wercker.TriggerNewRun(pipeline.ID, configPipeline.Branch)
 
 	if err != nil {
 		return nil, err
