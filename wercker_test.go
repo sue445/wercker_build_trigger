@@ -14,7 +14,7 @@ import (
 
 func TestWercker_TriggerNewRun(t *testing.T) {
 	token := "api_token"
-	pipelineId := "123456789012345678901234"
+	pipelineID := "123456789012345678901234"
 	branch := "develop"
 
 	// stub Time.Now()
@@ -36,7 +36,7 @@ func TestWercker_TriggerNewRun(t *testing.T) {
 			if err := json.NewDecoder(req.Body).Decode(&param); err != nil {
 				return httpmock.NewStringResponse(400, ""), nil
 			}
-			assert.Equal(t, pipelineId, param.PipelineID)
+			assert.Equal(t, pipelineID, param.PipelineID)
 			assert.Equal(t, branch, param.Branch)
 			assert.Equal(t, message, param.Message)
 
@@ -52,7 +52,7 @@ func TestWercker_TriggerNewRun(t *testing.T) {
 
 	wercker := NewWercker(token)
 
-	ret, err := wercker.TriggerNewRun(pipelineId, branch)
+	ret, err := wercker.TriggerNewRun(pipelineID, branch)
 
 	assert.NoError(t, err)
 
