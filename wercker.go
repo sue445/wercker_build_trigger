@@ -148,6 +148,7 @@ func (w *Wercker) FindPipeline(applicationPath string, pipelineName string) (pip
 	}
 }
 
+// TriggerNewRun trigger new run with specified pipeline id and branch
 func (w *Wercker) TriggerNewRun(pipelineId string, branch string) (run *WerckerRun, err error) {
 	currentTime := time.Now().Format("2006-01-02 15:04:05")
 	params := WerckerTriggerNewRunParam{
