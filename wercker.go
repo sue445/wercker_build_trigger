@@ -93,7 +93,7 @@ func (w *Wercker) GetApplication(applicationPath string) (app *WerckerApplicatio
 }
 
 // GetRuns gets `runs` with specified application
-func (w *Wercker) GetRuns(applicationId string, skip int) (runs []WerckerRun, err error) {
+func (w *Wercker) GetRuns(applicationID string, skip int) (runs []WerckerRun, err error) {
 	req, err := http.NewRequest(
 		"GET",
 		"https://app.wercker.com/api/v3/runs",
@@ -104,7 +104,7 @@ func (w *Wercker) GetRuns(applicationId string, skip int) (runs []WerckerRun, er
 	}
 
 	values := url.Values{}
-	values.Add("applicationId", applicationId)
+	values.Add("applicationId", applicationID)
 	values.Add("skip", strconv.Itoa(skip))
 	values.Add("limit", strconv.Itoa(MaxLimit))
 	req.URL.RawQuery = values.Encode()
