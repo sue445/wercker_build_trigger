@@ -71,6 +71,7 @@ func NewWercker(token string) *Wercker {
 	return w
 }
 
+// GetApplication gets `application` with specified application path
 func (w *Wercker) GetApplication(applicationPath string) (app *WerckerApplication, err error) {
 	req, err := http.NewRequest(
 		"GET",
