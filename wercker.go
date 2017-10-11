@@ -119,6 +119,7 @@ func (w *Wercker) GetRuns(applicationId string, skip int) (runs []WerckerRun, er
 	return runs, err
 }
 
+// FindPipeline find `pipeline` with specified application path and pipeline name
 func (w *Wercker) FindPipeline(applicationPath string, pipelineName string) (pipeline *WerckerPipeline, err error) {
 	application, err := w.GetApplication(applicationPath)
 	if err != nil {
