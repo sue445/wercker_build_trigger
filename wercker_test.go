@@ -63,7 +63,7 @@ func TestWercker_TriggerNewRun(t *testing.T) {
 func TestWercker_GetApplication(t *testing.T) {
 	token := "api_token"
 	applicationPath := "wercker/docs"
-	applicationId := "54c9168980c7075225004157"
+	applicationID := "54c9168980c7075225004157"
 
 	// mock http GET
 	httpmock.Activate()
@@ -81,7 +81,7 @@ func TestWercker_GetApplication(t *testing.T) {
 	ret, err := wercker.GetApplication(applicationPath)
 
 	assert.NoError(t, err)
-	assert.Equal(t, applicationId, ret.ID)
+	assert.Equal(t, applicationID, ret.ID)
 }
 
 func TestWercker_GetRuns(t *testing.T) {
