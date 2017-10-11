@@ -14,7 +14,9 @@ const (
 )
 
 var (
-	Version        string
+	// Version represents app version (injected from ldflags)
+	Version string
+
 	Revision       string
 	configFile     string
 	token          string
