@@ -92,6 +92,7 @@ func (w *Wercker) GetApplication(applicationPath string) (app *WerckerApplicatio
 	return app, err
 }
 
+// GetRuns gets `runs` with specified application
 func (w *Wercker) GetRuns(applicationId string, skip int) (runs []WerckerRun, err error) {
 	req, err := http.NewRequest(
 		"GET",
