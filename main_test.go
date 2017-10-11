@@ -19,8 +19,8 @@ func (w *MockWercker) FindPipeline(appPath string, pipelineName string) (pipelin
 	return w.findPipeline(appPath, pipelineName)
 }
 
-func (w *MockWercker) TriggerNewRun(pipelineId string, branch string) (run *WerckerRun, err error) {
-	return w.triggerNewRun(pipelineId, branch)
+func (w *MockWercker) TriggerNewRun(pipelineID string, branch string) (run *WerckerRun, err error) {
+	return w.triggerNewRun(pipelineID, branch)
 }
 
 func TestPerform_Success_MaxiumKeys(t *testing.T) {
