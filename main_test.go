@@ -42,7 +42,7 @@ func TestPerform_Success_MaxiumKeys(t *testing.T) {
 		assert.Equal(t, pipelineName, _pipelineName)
 
 		pipeline = new(WerckerPipeline)
-		pipeline.Id = pipelineID
+		pipeline.ID = pipelineID
 		pipeline.Name = pipelineName
 		return pipeline, nil
 	}
@@ -76,7 +76,7 @@ func TestPerform_Success_MinimumKeys(t *testing.T) {
 		assert.Equal(t, DefaultPipelineName, _pipelineName)
 
 		pipeline = new(WerckerPipeline)
-		pipeline.Id = pipelineID
+		pipeline.ID = pipelineID
 		pipeline.Name = DefaultPipelineName
 		return pipeline, nil
 	}

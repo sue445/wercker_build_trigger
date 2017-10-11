@@ -40,7 +40,7 @@ type WerckerRun struct {
 
 // WerckerPipeline represents a `pipeline` resource
 type WerckerPipeline struct {
-	Id   string `json:"id"`
+	ID   string `json:"id"`
 	Name string `json:"name"`
 }
 

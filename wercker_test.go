@@ -106,7 +106,7 @@ func TestWercker_GetRuns(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.Equal(t, "588a61d30a002301003b44d5", ret[0].ID)
-	assert.Equal(t, "54c9168980c7075225004157", ret[0].Pipeline.Id)
+	assert.Equal(t, "54c9168980c7075225004157", ret[0].Pipeline.ID)
 	assert.Equal(t, "build", ret[0].Pipeline.Name)
 }
 
@@ -136,7 +136,7 @@ func TestWercker_FindPipeline(t *testing.T) {
 	pipeline, err := wercker.FindPipeline(applicationPath, pipelineName)
 
 	assert.NoError(t, err)
-	assert.Equal(t, "54c9168980c7075225004157", pipeline.Id)
+	assert.Equal(t, "54c9168980c7075225004157", pipeline.ID)
 	assert.Equal(t, "build", pipeline.Name)
 }
 

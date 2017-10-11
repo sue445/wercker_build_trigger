@@ -81,7 +81,7 @@ func perform(wercker WerckerTrigger, configPipeline *ConfigPipeline) (run *Werck
 		return nil, err
 	}
 
-	ret, err := wercker.TriggerNewRun(pipeline.Id, configPipeline.Branch)
+	ret, err := wercker.TriggerNewRun(pipeline.ID, configPipeline.Branch)
 
 	if err != nil {
 		return nil, err
