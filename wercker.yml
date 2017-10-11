@@ -40,6 +40,12 @@ build:
         code: |
           go vet
 
+    - script:
+        name: golint
+        code: |
+          go get -u github.com/golang/lint/golint
+          golint -set_exit_status
+
   after-steps:
     # https://github.com/wercker/step-slack
     - slack-notifier:
