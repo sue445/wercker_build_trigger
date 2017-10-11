@@ -114,7 +114,7 @@ func TestWercker_FindPipeline(t *testing.T) {
 	token := "api_token"
 	applicationPath := "wercker/docs"
 	pipelineName := "build"
-	applicationId := "54c9168980c7075225004157"
+	applicationID := "54c9168980c7075225004157"
 	skip := 0
 
 	// mock http GET
@@ -127,7 +127,7 @@ func TestWercker_FindPipeline(t *testing.T) {
 	)
 
 	httpmock.RegisterResponder(
-		"GET", fmt.Sprintf("https://app.wercker.com/api/v3/runs?applicationId=%s&limit=%d&skip=%d", applicationId, MaxLimit, skip),
+		"GET", fmt.Sprintf("https://app.wercker.com/api/v3/runs?applicationId=%s&limit=%d&skip=%d", applicationID, MaxLimit, skip),
 		httpmock.NewStringResponder(200, readFile("test/GetRuns.json")),
 	)
 
