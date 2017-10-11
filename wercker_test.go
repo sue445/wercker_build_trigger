@@ -26,7 +26,7 @@ func TestWercker_TriggerNewRun(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
-	runUrl := "https://app.wercker.com/api/v3/runs/577a36013828f9673b035730"
+	runURL := "https://app.wercker.com/api/v3/runs/577a36013828f9673b035730"
 	message := "wercker_build_trigger: 2017-09-12 01:02:03"
 
 	httpmock.RegisterResponder(
@@ -40,7 +40,7 @@ func TestWercker_TriggerNewRun(t *testing.T) {
 			assert.Equal(t, branch, param.Branch)
 			assert.Equal(t, message, param.Message)
 
-			response := WerckerRun{URL: runUrl, Message: param.Message}
+			response := WerckerRun{URL: runURL, Message: param.Message}
 
 			resp, err := httpmock.NewJsonResponse(200, response)
 			if err != nil {
@@ -56,7 +56,7 @@ func TestWercker_TriggerNewRun(t *testing.T) {
 
 	assert.NoError(t, err)
 
-	assert.Equal(t, runUrl, ret.URL)
+	assert.Equal(t, runURL, ret.URL)
 	assert.Equal(t, message, ret.Message)
 }
 
