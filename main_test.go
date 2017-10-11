@@ -73,11 +73,11 @@ func TestPerform_Success_MinimumKeys(t *testing.T) {
 	wercker := NewStubWercker()
 	wercker.findPipeline = func(_appPath string, _pipelineName string) (pipeline *WerckerPipeline, err error) {
 		assert.Equal(t, appPath, _appPath)
-		assert.Equal(t, DEFAULT_PIPELINE_NAME, _pipelineName)
+		assert.Equal(t, DefaultPipelineName, _pipelineName)
 
 		pipeline = new(WerckerPipeline)
 		pipeline.Id = pipelineId
-		pipeline.Name = DEFAULT_PIPELINE_NAME
+		pipeline.Name = DefaultPipelineName
 		return pipeline, nil
 	}
 	wercker.triggerNewRun = func(_pipelineId string, _branch string) (run *WerckerRun, err error) {
@@ -95,7 +95,7 @@ func TestPerform_Success_MinimumKeys(t *testing.T) {
 	assert.Equal(t, url, run.Url)
 
 	assert.Equal(t, DefaultBranch, configPipeline.Branch)
-	assert.Equal(t, DEFAULT_PIPELINE_NAME, configPipeline.PipelineName)
+	assert.Equal(t, DefaultPipelineName, configPipeline.PipelineName)
 }
 
 func TestPerform_Error(t *testing.T) {

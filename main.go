@@ -7,8 +7,8 @@ import (
 
 const (
 	// DefaultBranch represents default branch name when branch is undefined in config file
-	DefaultBranch         = "master"
-	DEFAULT_PIPELINE_NAME = "build"
+	DefaultBranch       = "master"
+	DefaultPipelineName = "build"
 )
 
 var (
@@ -66,7 +66,7 @@ func perform(wercker WerckerTrigger, configPipeline *ConfigPipeline) (run *Werck
 		configPipeline.Branch = DefaultBranch
 	}
 	if len(configPipeline.PipelineName) == 0 {
-		configPipeline.PipelineName = DEFAULT_PIPELINE_NAME
+		configPipeline.PipelineName = DefaultPipelineName
 	}
 
 	pipeline, err := wercker.FindPipeline(configPipeline.ApplicationPath, configPipeline.PipelineName)
