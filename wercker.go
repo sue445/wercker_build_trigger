@@ -26,6 +26,7 @@ type WerckerApplication struct {
 	ID string `json:"id"`
 }
 
+// WerckerRun represents a `run` resource
 type WerckerRun struct {
 	Id         string          `json:"id"`
 	Url        string          `json:"url"`
