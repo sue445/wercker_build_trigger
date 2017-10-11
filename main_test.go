@@ -82,7 +82,7 @@ func TestPerform_Success_MinimumKeys(t *testing.T) {
 	}
 	wercker.triggerNewRun = func(_pipelineId string, _branch string) (run *WerckerRun, err error) {
 		assert.Equal(t, pipelineId, _pipelineId)
-		assert.Equal(t, DEFAULT_BRANCH, _branch)
+		assert.Equal(t, DefaultBranch, _branch)
 
 		run = new(WerckerRun)
 		run.Url = url
@@ -94,7 +94,7 @@ func TestPerform_Success_MinimumKeys(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, url, run.Url)
 
-	assert.Equal(t, DEFAULT_BRANCH, configPipeline.Branch)
+	assert.Equal(t, DefaultBranch, configPipeline.Branch)
 	assert.Equal(t, DEFAULT_PIPELINE_NAME, configPipeline.PipelineName)
 }
 
