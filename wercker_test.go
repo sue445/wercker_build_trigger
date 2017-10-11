@@ -81,7 +81,7 @@ func TestWercker_GetApplication(t *testing.T) {
 	ret, err := wercker.GetApplication(applicationPath)
 
 	assert.NoError(t, err)
-	assert.Equal(t, applicationId, ret.Id)
+	assert.Equal(t, applicationId, ret.ID)
 }
 
 func TestWercker_GetRuns(t *testing.T) {

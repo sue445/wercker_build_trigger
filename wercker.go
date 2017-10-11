@@ -23,7 +23,7 @@ type Wercker struct {
 
 // WerckerApplication represents a `application` resource
 type WerckerApplication struct {
-	Id string `json:"id"`
+	ID string `json:"id"`
 }
 
 type WerckerRun struct {
@@ -120,7 +120,7 @@ func (w *Wercker) FindPipeline(applicationPath string, pipelineName string) (pip
 	skip := 0
 
 	for {
-		runs, err := w.GetRuns(application.Id, skip)
+		runs, err := w.GetRuns(application.ID, skip)
 		if err != nil {
 			return nil, err
 		}
