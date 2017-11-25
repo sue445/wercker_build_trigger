@@ -64,3 +64,6 @@ crontab
 ```
 0 3 * * 0 /path/to/wercker_build_trigger --config /path/to/wercker_build_trigger.yml --token xxxxxxx
 ```
+
+## Changelog
+https://github.com/sue445/wercker_build_trigger/releases
