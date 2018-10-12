@@ -69,5 +69,5 @@ build-lint:
     - script:
         name: golint
         code: |
-          go get -u github.com/golang/lint/golint
+          go get -u golang.org/x/lint/golint
           golint -set_exit_status
