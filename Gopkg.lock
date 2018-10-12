@@ -2,44 +2,61 @@
 
 
 [[projects]]
-  branch = "master"
+  digest = "1:a6ee710e45210bafe11f2f28963571be2ac8809f9a7b675a6d2c02302a1ce1a9"
   name = "github.com/bouk/monkey"
   packages = ["."]
-  revision = "b96e337f6e5b36906584cd0cf9803bbab09284f7"
+  pruneopts = ""
+  revision = "5df1f207ff77e025801505ae4d903133a0b4353f"
+  version = "v1.0.0"
 
 [[projects]]
+  digest = "1:0deddd908b6b4b768cfc272c16ee61e7088a60f7fe2f06c547bd3d8e1f8b8e77"
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
-  revision = "346938d642f2ec3594ed81d874461961cd0faa76"
-  version = "v1.1.0"
+  pruneopts = ""
+  revision = "8991bc29aa16c548c550c7ff78260e27b9ab7c73"
+  version = "v1.1.1"
 
 [[projects]]
   branch = "master"
+  digest = "1:9815b184515c9ddb6035e79b9c7ff4f823987a0e8b583fd1b27898d39b8323dc"
   name = "github.com/jarcoal/httpmock"
   packages = ["."]
-  revision = "4442edb3db31196622da56482fd8d0fa375fba4d"
+  pruneopts = ""
+  revision = "9c70cfe4a1dad2f143c2244b45f2161fc72ceddf"
 
 [[projects]]
+  digest = "1:256484dbbcd271f9ecebc6795b2df8cad4c458dd0f5fd82a8c2fa0c29f233411"
   name = "github.com/pmezard/go-difflib"
   packages = ["difflib"]
+  pruneopts = ""
   revision = "792786c7400a136282c1664665ae0a8db921c6c2"
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:c587772fb8ad29ad4db67575dad25ba17a51f072ff18a22b4f0257a4d9c24f75"
   name = "github.com/stretchr/testify"
   packages = ["assert"]
-  revision = "69483b4bd14f5845b5a1e55bca19e954e827f1d0"
-  version = "v1.1.4"
+  pruneopts = ""
+  revision = "f35b8ab0b5a2cef36673838d662e249dd9c94686"
+  version = "v1.2.2"
 
 [[projects]]
   branch = "v2"
+  digest = "1:f0620375dd1f6251d9973b5f2596228cc8042e887cd7f827e4220bc1ce8c30e2"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
-  revision = "eb3733d160e74a9c7e442f435eb3bea458e1d19f"
+  pruneopts = ""
+  revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "6cd8dd38fd9194f7ce1e04457313e217a743d20f09c6c9b6ac04c220eda79304"
+  input-imports = [
+    "github.com/bouk/monkey",
+    "github.com/jarcoal/httpmock",
+    "github.com/stretchr/testify/assert",
+    "gopkg.in/yaml.v2",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
