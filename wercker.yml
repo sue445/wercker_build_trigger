@@ -64,7 +64,7 @@ build-lint:
     - script:
         name: go vet
         code: |
-          go vet
+          go tool vet *.go
 
     - script:
         name: golint
